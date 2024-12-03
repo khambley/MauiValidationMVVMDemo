@@ -9,7 +9,7 @@
     <ScrollView>
         <VerticalStackLayout
             Padding="30,0"
-            Spacing="25">
+            Spacing="10">
 
             <Label Text="Login"
                    HorizontalOptions="Center"
@@ -18,10 +18,6 @@
             <Label Text="Username" />
             <Border Stroke="LightBlue">
                 <Entry Text="{Binding UserName.Value, Mode=TwoWay}">
-                    <Entry.Behaviors>
-                        <toolkit:EventToCommandBehavior EventName="TextChanged"
-                                                        Command="{Binding ValidateCommand}" />
-                    </Entry.Behaviors>
                     <Entry.Triggers>
                         <DataTrigger TargetType="Entry"
                                      Binding="{Binding UserName.IsValid}"
@@ -42,15 +38,45 @@
                         </DataTrigger>
                 </Border.Triggers>
             </Border>
+
+            <Label Text="{Binding UserName.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                   TextColor="#D42D28"
+                   FontSize="Micro"
+                   IsVisible="False">
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label"
+                                 Binding="{Binding UserName.IsValid}"
+                                 Value="False">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
+
             <Label Text="Password" />
-            <Entry Text=""></Entry>
+            <Border Stroke="LightBlue">
+                <Entry Text="{Binding Password.Value, Mode=TwoWay}">
+                    <Entry.Triggers>
+                        <DataTrigger TargetType="Entry"
+                                     Binding="{Binding Password.IsValid}"
+                                     Value="False">
+                            <Setter Property="BackgroundColor" Value="#D42D28" />
+                            <Setter Property="Opacity" Value="0.25" /> 
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <Border.Triggers>
+                    <DataTrigger TargetType="Border"
+                                 Binding="{Binding Password.IsValid}"
+                                 Value="False">
+                            <Setter Property="Stroke" Value="#D42D28" />
+                            <Setter Property="StrokeShape" Value="RoundRectangle 5" />
+                            <Setter Property="StrokeThickness" Value="1" />
+                        </DataTrigger>
+                </Border.Triggers>
+            </Border>
+            
             <Border Stroke="LightBlue">
                 <Entry Text="{Binding ItemQuantity.Value, Mode=TwoWay}">
-                    <Entry.Behaviors>
-                            <toolkit:EventToCommandBehavior EventName="TextChanged"
-                                                            Command="{Binding ValidateCommand}" />
-
-                    </Entry.Behaviors>
                     <Entry.Triggers>
                         <DataTrigger TargetType="Entry"
                                      Binding="{Binding ItemQuantity.IsValid}"

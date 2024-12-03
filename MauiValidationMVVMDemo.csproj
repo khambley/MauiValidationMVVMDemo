@@ -70,9 +70,11 @@
 	<ItemGroup>
 	  <None Remove="Validations\" />
 	  <None Remove="ViewModels\" />
+	  <None Remove="Converters\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Validations\" />
 	  <Folder Include="ViewModels\" />
+	  <Folder Include="Converters\" />
 	</ItemGroup>
 </Project>

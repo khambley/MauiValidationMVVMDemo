@@ -21,37 +21,48 @@ namespace MauiValidationMVVMDemo.ViewModels
 
         public MainViewModel()
 		{
-		}
+            
+        }
 		[RelayCommand]
 		private async Task LoginAsync()
 		{
-			AddValidationRules();
-			var isValid = UserName.Validate() && ItemQuantity.Validate();
-			if (isValid)
+            AddValidationRules();
+            //Validate();
+			if (Validate())
 			{
-				var username = UserName;
-				var unValue = UserName.Value;
-				var qtyValue = ItemQuantity.Value;
-				await Shell.Current.DisplayAlert("Username Valid", "Username is valid", "OK");
-			}
-			else
-			{
-                await Shell.Current.DisplayAlert("Username Not Valid", "Username is not valid", "OK");
+                await Shell.Current.DisplayAlert("Validation Successful", "Username, Password and ItemQty are valid", "OK");
             }
 		}
 
-        [RelayCommand]
-        private void Validate()
+        private bool ValidateUserName()
+		{
+			return UserName.Validate();
+		}
+
+        private bool ValidatePassword()
         {
-            AddValidationRules();
-            IsValid = ItemQuantity.Validate();
+            return Password.Validate();
         }
-        private void AddValidationRules()
+
+		private bool ValidateItemQuantity()
+		{
+			return ItemQuantity.Validate();
+		}
+
+		private bool Validate()
+		{
+			bool isValidUser = ValidateUserName();
+			bool isValidPassword = ValidatePassword();
+			bool isValidItemQuantity = ValidateItemQuantity();
+			//IsValid = UserName.IsValid && Password.IsValid && ItemQuantity.IsValid;
+            return isValidUser && isValidPassword && isValidItemQuantity;
+        }
+
+		private void AddValidationRules()
 		{
             UserName.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "A username is required." });
             Password.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "A password is required." });
 			ItemQuantity.Validations.Add(new IsGreaterThanZeroRule<int> { ValidationMessage = "A quantity greater than zero is required." });
-			ItemQuantity.Validations.Add(new IsNotNullOrEmptyRule<int> { ValidationMessage = "A quantity value is required." });
         }
 
     }
